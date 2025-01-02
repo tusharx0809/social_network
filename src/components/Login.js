@@ -67,16 +67,14 @@ const Login = () => {
               Password
             </label>
             <input
-              className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter Password..."
               value={credentials.password || ""}
               onChange={onChange}
               name="password"
               id="password"
             />
-            <p className="text-red-500 text-xs italic">
-              Please choose a password.
-            </p>
+            
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4">
             <button
@@ -85,11 +83,12 @@ const Login = () => {
             >
               Sign In
             </button>
-            <button
+            <Link to="/signup"><button
               className="bg-green-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-4 sm:mt-0 focus:outline-none focus:shadow-outline"
             >
               Sign Up
             </button>
+            </Link>
           </div>
         </form>
         <p className="text-center text-gray-500 text-xs">Social Mate</p>
