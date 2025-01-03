@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import profileContext from "../context/profile/ProfileContext";
 
 const Posts = () => {
@@ -301,19 +301,42 @@ const Posts = () => {
         <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
           Stay up to date with latest feed
         </p>
-        <div className="flex-auto">
-          <div className="box-border h-auto w-auto p-4 border-2 rounded-3xl">
-            <div class="flex flex-col justify-between p-4 leading-normal">
-              <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021
-                so far, in reverse chronological order.
-              </p>
+
+        
+        <textarea
+          id="message"
+          rows="4"
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-6"
+          placeholder="Write your thoughts here..."
+        ></textarea>
+        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-6">Share</button>
+        
+        {sortedPosts.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "20px", color: "#888" }}>
+            <h5>No posts available</h5>
+          </div>
+        ) : ( sortedPosts
+            .filter(
+                (post) => user && (user.friends.some((friend)=>friend._id === post.user) || 
+            post.user === user._id)
+        ).map((post, index) => (
+            <div className="flex-auto">
+            <div className="box-border h-auto w-auto p-4 border-2 rounded-3xl">
+              <div className="flex flex-col p-4 leading-normal">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {usernames[post.user]}
+                </h5>
+                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                  Here are the biggest enterprise technology acquisitions of 2021
+                  so far, in reverse chronological order.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        ))
+        )
+    }
+        
       </div>
     </div>
   );
