@@ -17,7 +17,7 @@ const ProfileState = (props) => {
   const [user, setUser] = useState(null);
   const getUserProfile = async () => {
     const response = await fetch(`${host}/api/auth/getuser/`, {
-      method: "POST",
+      method: "GET",
       headers: {
         "auth-token": localStorage.getItem("token"),
       },

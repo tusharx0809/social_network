@@ -116,7 +116,7 @@ router.post(
     }
 )
 //ROUTE 3 Endpoint: Get user details using post /api/auth/getuser
-router.post(
+router.get(
     "/getuser",
     fetchuser,
     async(req, res)=>{
