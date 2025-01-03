@@ -382,13 +382,132 @@ const Posts = () => {
                       <p className="font-serif text-gray-600 text-md text-left">
                         {formatDate(post.date)}
                       </p>
+                      {post.comments && post.comments.length > 0 && (
+                        <div className="my-5">
+                          <>
+                            <div className="box-borderborder-gray-500">
+                              {post.comments.map((comment, index) => (
+                                <div
+                                  key={index}
+                                  className="flex items-start mb-3"
+                                >
+                                  <p className="text-left text-white font-light">
+                                    <strong>{usernames[comment.user]}:</strong>
+                                    &nbsp ;
+                                  </p>
+                                  <div className="flex-1 text-left">
+                                    <p className="text-gray-300 font-mono">
+                                      {comment.text}
+                                    </p>
+                                  </div>
+                                  <small className="text-muted text-white">
+                                    <i className="fa-solid fa-stopwatch fa-sm" />{" "}
+                                    {new Date(comment.date).toLocaleString()}
+                                  </small>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        </div>
+                      )}
                     </div>
+                    <textarea
+                      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-6"
+                      rows="1"
+                      placeholder="Add a comment..."
+                      value={commentText[post._id] || ""}
+                      onChange={(e) => handleCommentChange(e, post._id)}
+                    ></textarea>
+                    <button
+                      className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                      onClick={() => handleCommentSubmit(post._id)}
+                    >
+                      Comment <i className="fa-solid fa-comment fa-lg" />
+                    </button>
+
+                    {user &&
+                    post.likes &&
+                    post.likes.likedBy &&
+                    post.likes.likedBy.includes(user._id) ? (
+                      <>
+                        <button
+                          className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                          onClick={() => removeLike(post._id)}
+                        >
+                          Unlike <i className="fa-solid fa-heart-crack fa-lg" />
+                        </button>
+                        <button className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                          {likes[post._id] || 0}
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                          onClick={() => addLike(post._id)}
+                        >
+                          Like <i className="fa-solid fa-heart fa-lg" />
+                        </button>
+                        <button className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                          {likes[post._id]}
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               ))
           )}
         </div>
       </div>
+      {iseditModalOpen && (
+        <>
+          <div
+            id="default-modal "
+            tabindex="-1"
+            aria-hidden="true"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+          >
+            <div className="relative p-4 w-full max-w-2xl max-h-full">
+              <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-6">
+                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Edit Post
+                  </h3>
+                </div>
+
+                <textarea
+                  id="message"
+                  rows="10"
+                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-4"
+                  placeholder="Enter text here to update post..."
+                  value={editPostDescription}
+                  onChange={(e) => setEditPostDescription(e.target.value)}
+                  
+                ></textarea>
+
+                <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <button
+                    data-modal-hide="default-modal"
+                    type="button"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    onClick={handlePostUpdate}
+                  >
+                    Update
+                  </button>
+                  <button
+                    data-modal-hide="default-modal"
+                    type="button"
+                    className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    onClick={() => setIsEditModalOpen(false)}
+                  >
+                    Go Back
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
