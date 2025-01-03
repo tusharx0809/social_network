@@ -16,7 +16,7 @@ const Home = () => {
   
   return (
     <div className="container mx-auto my-6">
-      {user?.name || " "}
+      
     </div>
   )
 }
