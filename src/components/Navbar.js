@@ -25,7 +25,7 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex flex-1 items-center justify-between sm:items-stretch">
               <div className="flex items-center">
-                <p className="font-sans text-xl text-white">SocialMate {user?.name ? `-${user.name}`:""}</p>
+                <p className="font-sans text-xl text-white">SocialMate {user?.name ? `-${user.name}`:""}  </p>
               </div>
               {/* Desktop Links */}
               {user && (
