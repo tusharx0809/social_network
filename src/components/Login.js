@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   let navigate = useNavigate();
-  const { user, getUserProfile, getAllPosts } = useContext(profileContext);
+  const { alert, showAlert, user, getUserProfile, getAllPosts } = useContext(profileContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // to not reload page
@@ -26,9 +26,9 @@ const Login = () => {
       await getUserProfile(); // Fetch user profile
       await getAllPosts();
       navigate("/");
-      alert("Logged in successfully");
+      showAlert("Logged in successfully","success");
     } else {
-      alert("Invalid Credentials");
+      showAlert("Invalid Credentials","danger");
     }
   };
 
@@ -37,6 +37,32 @@ const Login = () => {
   };
 
   return (
+    <>
+    <div>
+        {/* Display alert if exists */}
+        {alert && alert.message && alert.type && (
+          <div className={`p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 ${
+            alert.type === "success" 
+            ? "dark:text-green-400"
+            : alert.type === "danger"
+            ? "dark:text-red-400"
+            : ""
+          }`}
+          style={{
+            position: "fixed",
+            top: "70px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 10,
+            width: "500px",
+            padding: "10px",
+            textAlign: "center",
+            borderRadius: "20px",
+          }}>
+          <span className="font-medium">Alert: </span> {alert.message}
+        </div>
+        )}
+      </div>
     <div className="flex items-center justify-center min-h-screen bg-gray-500">
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={handleSubmit}>
@@ -105,6 +131,7 @@ const Login = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

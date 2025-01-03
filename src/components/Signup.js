@@ -13,12 +13,12 @@ const Signup = () => {
   });
   const navigate = useNavigate();
   const context = useContext(profileContext);
-  const { getUserProfile } = context;
+  const { alert,showAlert, getUserProfile } = context;
   const createUser = async (e) => {
     e.preventDefault();
     const { name, email, password, cpassword, username, dob } = credentials;
     if (password !== cpassword) {
-      alert("Passwords msut be same!", "danger");
+      showAlert("Passwords msut be same!", "danger");
       return;
     }
     const response = await fetch(`${host}/api/auth/createuser/`, {
@@ -33,7 +33,7 @@ const Signup = () => {
     if (json.success) {
       localStorage.setItem("token", json.authToken);
       navigate("/");
-      alert("Account created successfully!", "success");
+      showAlert("Account created successfully!", "success");
       getUserProfile();
     } else {
       alert(json.error, "danger");
@@ -59,6 +59,32 @@ const Signup = () => {
   }, []);
 
   return (
+    <>
+    <div>
+        {/* Display alert if exists */}
+        {alert && alert.message && alert.type && (
+          <div className={`p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 ${
+            alert.type === "success" 
+            ? "dark:text-green-400"
+            : alert.type === "danger"
+            ? "dark:text-red-400"
+            : ""
+          }`}
+          style={{
+            position: "fixed",
+            top: "70px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 10,
+            width: "500px",
+            padding: "10px",
+            textAlign: "center",
+            borderRadius: "20px",
+          }}>
+          <span className="font-medium">Alert: </span> {alert.message}
+        </div>
+        )}
+      </div>
     <div className="flex items-center justify-center min-h-screen bg-gray-500">
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={createUser}>
@@ -174,6 +200,7 @@ const Signup = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

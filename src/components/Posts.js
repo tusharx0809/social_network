@@ -330,7 +330,7 @@ const Posts = () => {
             borderRadius: "10px",
           }}
         >
-          {sortedPosts.length === 0 ? (
+          {sortedPosts.length === 0 || user?.friends.length === 0 ? (
             <div
               style={{ textAlign: "center", padding: "20px", color: "#888" }}
             >
