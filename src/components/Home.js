@@ -1,6 +1,7 @@
 import React,{useContext, useEffect} from 'react'
 import profileContext from "../context/profile/ProfileContext";
 import { useNavigate } from "react-router-dom";
+import Posts from './Posts';
 const Home = () => {
   const { user, getUserProfile, getAllPosts } = useContext(profileContext);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Home = () => {
   
   return (
     <div className="container mx-auto my-6">
-      
+      <Posts/>
     </div>
   )
 }

@@ -37,62 +37,72 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-xs sm:max-w-md md:max-w-lg">
-        <form
-          className="h-auto w-full bg-white shadow-2xl rounded-lg px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-500">
+      <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <h5 className="text-xl font-medium text-gray-900 dark:text-white">
+            Sign in to Social Mate
+          </h5>
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
+              for="email"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Username or Email
+              Email or Username
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Username or email..."
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              type="text"
+              placeholder="Enter username or email to login"
               value={credentials.email || ""}
               onChange={onChange}
               id="Email"
               name="email"
+              required
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
+              for="password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Password
+              Your password
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               type="password"
-              placeholder="Enter Password..."
+              placeholder="Enter Password"
               value={credentials.password || ""}
               onChange={onChange}
               name="password"
               id="password"
+              required
             />
-            
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto focus:outline-none focus:shadow-outline"
-              type="submit"
+          <div className="flex items-start">
+            <a
+              href="#"
+              className="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500"
             >
-              Sign In
-            </button>
-            <Link to="/signup"><button
-              className="bg-green-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-4 sm:mt-0 focus:outline-none focus:shadow-outline"
+              Lost Password?
+            </a>
+          </div>
+          <button
+            type="submit"
+            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Login
+          </button>
+          <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+            Not registered?{" "}
+            <a
+              href="#"
+              className="text-blue-700 hover:underline dark:text-blue-500"
             >
-              Sign Up
-            </button>
-            </Link>
+              Create account
+            </a>
           </div>
         </form>
-        <p className="text-center text-gray-500 text-xs">Social Mate</p>
       </div>
     </div>
   );
