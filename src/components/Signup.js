@@ -59,117 +59,119 @@ const Signup = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-xs sm:max-w-md md:max-w-lg">
-        <form
-          className="h-auto w-full bg-white shadow-2xl rounded-lg px-8 pt-6 pb-8 mb-4"
-          onSubmit={createUser}
-        >
-          <div className="mb-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-500">
+      <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <form className="space-y-6" onSubmit={createUser}>
+          <h5 className="text-xl font-medium text-gray-900 dark:text-white">
+            Sign Up to Social Mate
+          </h5>
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
+              for="email"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Name
+              Full Name
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               type="text"
               placeholder="Enter name..."
               onChange={onChange}
               id="name"
               name="name"
+              required
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="Email"
+              for="email"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Email
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               type="email"
               placeholder="Enter email..."
               onChange={onChange}
               id="Email"
               name="email"
+              required
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
+              for="username"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Username
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="text"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              type="type"
               placeholder="Enter username..."
               onChange={onChange}
               id="username"
               name="username"
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="username"
+              for="password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Password
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               type="password"
-              placeholder="Enter password..."
+              placeholder="Enter Password..."
               onChange={onChange}
-              id="password"
               name="password"
+              id="password"
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="Confirm password"
+              for="password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Confirm Password
+              Password
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               type="password"
-              placeholder="Confirm Password..."
+              placeholder="Confirm Password"
               onChange={onChange}
               name="cpassword"
               id="cpassword"
             />
           </div>
-          <div className="mb-6">
+          
+          <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="dob"
+              for="dob"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Date of Birth
+              Date of birth
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               type="date"
               onChange={onChange}
               name="dob"
               id="dob"
             />
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-4">
-            <button
-              className="bg-green-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-4 sm:mt-0 focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Sign Up
-            </button>
-          </div>
+
+          <button
+            type="submit"
+            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Create Account
+          </button>
+          
         </form>
-        <p className="text-center text-gray-500 text-xs">Social Mate</p>
       </div>
     </div>
   );
