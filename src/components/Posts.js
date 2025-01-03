@@ -393,7 +393,7 @@ const Posts = () => {
                                 >
                                   <p className="text-left text-white font-light">
                                     <strong>{usernames[comment.user]}:</strong>
-                                    &nbsp ;
+                                    &nbsp;
                                   </p>
                                   <div className="flex-1 text-left">
                                     <p className="text-gray-300 font-mono">
