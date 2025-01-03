@@ -16,7 +16,7 @@ const Home = () => {
   },[])
   
   return (
-    <div className="container mx-auto my-6">
+    <div className="container mx-auto my-10 p-4 max-w-4xl">
       <Posts/>
     </div>
   )

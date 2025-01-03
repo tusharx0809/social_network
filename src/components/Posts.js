@@ -302,41 +302,92 @@ const Posts = () => {
           Stay up to date with latest feed
         </p>
 
-        
-        <textarea
-          id="message"
-          rows="4"
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-6"
-          placeholder="Write your thoughts here..."
-        ></textarea>
-        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-6">Share</button>
-        
-        {sortedPosts.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "20px", color: "#888" }}>
-            <h5>No posts available</h5>
+        <form onSubmit={handlePostSubmit}>
+          <textarea
+            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-6"
+            placeholder="What's on your mind?"
+            id="postDescription"
+            value={postDescription}
+            onChange={handlePostChange}
+            rows="3"
+          ></textarea>
+          <div className="flex justify-start mb-6">
+            <button
+              type="submit"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Share Post
+            </button>
           </div>
-        ) : ( sortedPosts
-            .filter(
-                (post) => user && (user.friends.some((friend)=>friend._id === post.user) || 
-            post.user === user._id)
-        ).map((post, index) => (
-            <div className="flex-auto">
-            <div className="box-border h-auto w-auto p-4 border-2 rounded-3xl">
-              <div className="flex flex-col p-4 leading-normal">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {usernames[post.user]}
-                </h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Here are the biggest enterprise technology acquisitions of 2021
-                  so far, in reverse chronological order.
-                </p>
-              </div>
+        </form>
+        <div
+          className="posts-container"
+          style={{
+            maxHeight: "450px", // Adjust this height as per your design
+            overflowY: "scroll",
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "10px",
+          }}
+        >
+          {sortedPosts.length === 0 ? (
+            <div
+              style={{ textAlign: "center", padding: "20px", color: "#888" }}
+            >
+              <h5>No posts available</h5>
             </div>
-          </div>
-        ))
-        )
-    }
-        
+          ) : (
+            sortedPosts
+              .filter(
+                (post) =>
+                  user &&
+                  (user.friends.some((friend) => friend._id === post.user) ||
+                    post.user === user._id)
+              )
+              .map((post, index) => (
+                <div className="flex-auto">
+                  <div className="box-border h-auto w-auto p-4 border-2 rounded-3xl border-gray-500 my-6">
+                    <div className="flex flex-col p-4 leading-normal">
+                      <div className="flex items-center">
+                        <h5 className="mb-2 font-sans text-2xl tracking-tight text-gray-900 text-left dark:text-white mr-6">
+                          {usernames[post.user]}
+                        </h5>
+                        {user && user._id === post.user && (
+                          <>
+                            <div>
+                              <button
+                                className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                                style={{ width: "auto" }}
+                                onClick={() => handleDelete(post._id)} // Handle the delete functionality
+                              >
+                                Delete <i className="fa-solid fa-trash fa-lg" />
+                              </button>
+                              <button
+                                className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                                style={{ width: "auto" }}
+                                onClick={() =>
+                                  handleEdit(post._id, post.description)
+                                }
+                              >
+                                Edit <i className="fa-solid fa-pen fa-lg" />
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      <p className="mb-3 font-serif text-gray-400 text-lg text-left">
+                        {post.description}
+                      </p>
+                      <p className="font-serif text-gray-600 text-md text-left">
+                        {formatDate(post.date)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+          )}
+        </div>
       </div>
     </div>
   );
