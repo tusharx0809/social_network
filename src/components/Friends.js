@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import profileContext from "../context/profile/ProfileContext";
 
-const Profile = () => {
+const Friends = () => {
 
 
   const { alert, user, showAlert, getUserProfile } = useContext(profileContext);
@@ -176,4 +176,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Friends;

@@ -257,40 +257,7 @@ const Posts = () => {
     }
   };
 
-  //Handling Friend Requests
-  const addFriend = async (id) => {
-    const host = "http://localhost:5000";
-    const response = await fetch(`${host}/api/friends/send-request/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: user._id }),
-    });
-    const json = await response.json();
-    if (json.message === "Friend request sent") {
-      showAlert("Friend request sent!", "success");
-    } else {
-      showAlert(json.message, "danger");
-    }
-  };
-  const removeFriend = async (friendID) => {
-    const id = user._id;
-    const url = `http://localhost:5000/api/friends/remove-friend/${friendID}`;
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    });
-    const json = await response.json();
-    if (json.message === "Friend Removed") {
-      showAlert("Friend removed from Friend List", "success");
-    } else {
-      showAlert("No Such friend Exists", "danger");
-    }
-  };
+  
 
   return (
     <div>

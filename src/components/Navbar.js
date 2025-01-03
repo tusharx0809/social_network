@@ -37,10 +37,10 @@ const Navbar = () => {
                     Home
                   </Link>
                   <Link
-                    to="/profile"
+                    to="/friends"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
-                    Profile
+                    Friends
                   </Link>
                   <Link
                     to="/settings"
