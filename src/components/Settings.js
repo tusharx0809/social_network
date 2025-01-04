@@ -31,10 +31,30 @@ const Settings = () => {
           )}
         </div>
       <div className="container mx-auto my-10 p-4 max-w-4xl">
-      <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 my-6">
           <div className="box-border h-auto w-auto p-4 border-2 rounded-3xl border-gray-500">
           <h5 className="mb-2 text-3xl font-light text-gray-900 dark:text-white my-3">
             User Information Settings
+          </h5>
+          </div>
+          <p className="mb-2 text-xl font-light text-gray-900 dark:text-white my-6">
+              <strong>Profession:</strong> {user.profession}
+          </p>
+          <p className="mb-2 text-xl font-light text-gray-900 dark:text-white my-6">
+              <strong>Location:</strong> {user.location}
+          </p>
+          <p className="mb-2 text-xl font-light text-gray-900 dark:text-white my-6">
+              <strong>Phone:</strong> {user.phone}
+          </p>
+  
+          
+          
+        </div>
+
+        <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div className="box-border h-auto w-auto p-4 border-2 rounded-3xl border-gray-500">
+          <h5 className="mb-2 text-3xl font-light text-gray-900 dark:text-white my-3">
+            Account Settings
           </h5>
           </div>
           <p className="mb-2 text-xl font-light text-gray-900 dark:text-white my-6">
