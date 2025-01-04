@@ -4,7 +4,7 @@ import profileContext from "../context/profile/ProfileContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, setUser } = useContext(profileContext);
+  const { alert, showAlert, user, setUser } = useContext(profileContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -65,6 +65,41 @@ const Navbar = () => {
     if (userSelected) {
       setSelectedUser(userSelected);
       setIsUserModal(true);
+    }
+  };
+
+  //Handling Friend Requests
+  const addFriend = async (id) => {
+    const host = "http://localhost:5000";
+    const response = await fetch(`${host}/api/friends/send-request/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: user._id }),
+    });
+    const json = await response.json();
+    if (json.message === "Friend request sent") {
+      showAlert("Friend request sent!", "success");
+    } else {
+      showAlert(json.message, "danger");
+    }
+  };
+  const removeFriend = async (friendID) => {
+    const id = user._id;
+    const url = `http://localhost:5000/api/friends/remove-friend/${friendID}`;
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+    const json = await response.json();
+    if (json.message === "Friend Removed") {
+      showAlert("Friend removed from Friend List", "success");
+    } else {
+      showAlert("No Such friend Exists", "danger");
     }
   };
 
@@ -229,46 +264,46 @@ const Navbar = () => {
                       ref={searchRef}
                     />
                     {searchResults.length > 0 && (
-                        <div
-                          className="searchedresults"
-                          style={{
-                            position: "absolute",
-                            backgroundColor: "gray",
-                            right: "5px",
-                            left: "5px",
-                            padding: "5px",
-                            width: "auto",
-                            zIndex: 1000,
-                            borderRadius: "15px",
-                          }}
-                        >
-                          <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-                            {searchResults.map((searchedUser) => (
-                              <>
-                                <li
-                                  className="pb-3 sm:pb-4 m-3"
-                                  key={searchedUser._id}
-                                  onClick={() => goToProfile(searchedUser._id)}
-                                  style={{
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                                    <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-medium text-gray-500 truncate dark:text-white">
-                                        {searchedUser.name}
-                                      </p>
-                                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                        {searchedUser.username}
-                                      </p>
-                                    </div>
+                      <div
+                        className="searchedresults"
+                        style={{
+                          position: "absolute",
+                          backgroundColor: "gray",
+                          right: "5px",
+                          left: "5px",
+                          padding: "5px",
+                          width: "auto",
+                          zIndex: 1000,
+                          borderRadius: "15px",
+                        }}
+                      >
+                        <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                          {searchResults.map((searchedUser) => (
+                            <>
+                              <li
+                                className="pb-3 sm:pb-4 m-3"
+                                key={searchedUser._id}
+                                onClick={() => goToProfile(searchedUser._id)}
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-gray-500 truncate dark:text-white">
+                                      {searchedUser.name}
+                                    </p>
+                                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                      {searchedUser.username}
+                                    </p>
                                   </div>
-                                </li>
-                              </>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                                </div>
+                              </li>
+                            </>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </form>
                 <Link
@@ -300,6 +335,81 @@ const Navbar = () => {
           )}
         </div>
       </nav>
+      {isUserModal && (
+        <div
+          id="default-modal"
+          tabindex="-1"
+          aria-hidden="true"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+        >
+          <div className="relative p-4 w-full max-w-2xl max-h-full">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-6">
+              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  User Profile
+                </h3>
+              </div>
+              <section className="modal-card-body">
+                <div className="columns is-vcentered">
+                  <div className="column">
+                    <div className="is-size-4 my-2">
+                      <strong>Name:</strong> {selectedUser.name}
+                    </div>
+                    <div className="is-size-4">
+                      <strong>Username:</strong> {selectedUser.username}
+                    </div>
+                    <div className="is-size-4 my-2">
+                      <strong>Profession:</strong> {selectedUser.profession}
+                    </div>
+                    <div className="is-size-4">
+                      <strong>Location:</strong> {selectedUser.location}
+                    </div>
+                    <div className="is-size-4 my-2">
+                      <strong>Phone:</strong> {selectedUser.phone}
+                    </div>
+                    {user.friends.some(
+                      (friend) => friend.name === selectedUser.name
+                    ) ? (
+                      <button
+                        className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4"
+                        onClick={() => removeFriend(selectedUser._id)}
+                      >
+                        Remove Friend
+                      </button>
+                    ) : selectedUser.friendRequests.some(
+                        (request) => request === user._id
+                      ) ? (
+                      <button
+                        className="py-2.5 px-5 mt-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        disabled
+                      >
+                        Friend Request Sent
+                      </button>
+                    ) : (
+                      <button
+                        className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-4"
+                        onClick={() => addFriend(selectedUser._id)}
+                      >
+                        Add Friend
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </section>
+              <footer className="modal-card-foot">
+                <div className="flex items-center">
+                  <button
+                    className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    onClick={() => setIsUserModal(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
