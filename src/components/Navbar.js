@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import profileContext from "../context/profile/ProfileContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user,setUser } = useContext(profileContext);
+  const { user, setUser } = useContext(profileContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -18,19 +18,36 @@ const Navbar = () => {
   };
 
   return (
-    <div> 
+    <div>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800 shadow">
         <div className="mx-auto px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             {/* Logo */}
             <div className="flex flex-1 items-center justify-between sm:items-stretch">
               <div className="flex items-center">
-                <p className="font-sans text-xl text-white">SocialMate {user?.name ? `-${user.name}`:""}  </p>
+                <p className="font-sans text-xl text-white">
+                  SocialMate {user?.name ? `-${user.name}` : ""}{" "}
+                </p>
               </div>
               {/* Desktop Links */}
               {user && (
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
-                  <Link 
+                  <form class="flex items-center max-w-sm mx-auto">
+                   
+                    <div class="relative w-full">
+                      
+                      <input
+                        type="text"
+                        id="simple-search"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Search for users..."
+                        required
+                      />
+                    </div>
+                    
+                  </form>
+
+                  <Link
                     to="/"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
@@ -107,24 +124,38 @@ const Navbar = () => {
           {menuOpen && user && (
             <div className="sm:hidden" id="mobile-menu">
               <div className="space-y-1 px-2 pt-2 pb-3">
-                <a
-                  href="#"
+              <form class="flex items-center max-w-sm mx-auto">
+                   
+                   <div class="relative w-full">
+                     
+                     <input
+                       type="text"
+                       id="simple-search"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       placeholder="Search for users..."
+                       required
+                     />
+                   </div>
+                   
+                 </form>
+                <Link
+                  to="/"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
                   Home
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/friends"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  Profile
-                </a>
-                <a
-                  href="#"
+                  Friends
+                </Link>
+                <Link
+                  to="/settings"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
                   Settings
-                </a>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="block w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-red-700 hover:text-white"
