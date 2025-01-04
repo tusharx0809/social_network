@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import profileContext from "../context/profile/ProfileContext";
 
@@ -17,6 +17,57 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  //Handling search
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isUserModal, setIsUserModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchResults([]);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+  const handleSearchChange = async (event) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+    if (term.length) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/search-query/search?name=${encodeURIComponent(
+            term
+          )}`
+        );
+        if (response.ok) {
+          let data = await response.json();
+          data = data.filter((u) => u._id !== user._id);
+          setSearchResults(data);
+        } else {
+          setSearchResults([]);
+        }
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+        setSearchResults([]);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+  const goToProfile = (userId) => {
+    const userSelected = searchResults.find((u) => u._id === userId);
+    if (userSelected) {
+      setSelectedUser(userSelected);
+      setIsUserModal(true);
+    }
+  };
+
   return (
     <div>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800 shadow">
@@ -32,19 +83,60 @@ const Navbar = () => {
               {/* Desktop Links */}
               {user && (
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
-                  <form class="flex items-center max-w-sm mx-auto">
-                   
-                    <div class="relative w-full">
-                      
+                  <form className="flex items-center max-w-sm mx-auto">
+                    <div className="relative w-full">
                       <input
-                        type="text"
                         id="simple-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        type="text"
                         placeholder="Search for users..."
-                        required
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        style={{ zIndex: 2 }}
+                        ref={searchRef}
                       />
+                      {searchResults.length > 0 && (
+                        <div
+                          className="searchedresults"
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "#15161a",
+                            right: "5px",
+                            left: "5px",
+                            padding: "5px",
+                            width: "auto",
+                            zIndex: 1000,
+                            borderRadius: "15px",
+                          }}
+                        >
+                          <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                            {searchResults.map((searchedUser) => (
+                              <>
+                                <li
+                                  className="pb-3 sm:pb-4 m-3"
+                                  key={searchedUser._id}
+                                  onClick={() => goToProfile(searchedUser._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium text-gray-500 truncate dark:text-white">
+                                        {searchedUser.name}
+                                      </p>
+                                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        {searchedUser.username}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </li>
+                              </>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-                    
                   </form>
 
                   <Link
@@ -124,20 +216,61 @@ const Navbar = () => {
           {menuOpen && user && (
             <div className="sm:hidden" id="mobile-menu">
               <div className="space-y-1 px-2 pt-2 pb-3">
-              <form class="flex items-center max-w-sm mx-auto">
-                   
-                   <div class="relative w-full">
-                     
-                     <input
-                       type="text"
-                       id="simple-search"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Search for users..."
-                       required
-                     />
-                   </div>
-                   
-                 </form>
+                <form className="flex items-center max-w-sm mx-auto">
+                  <div className="relative w-full">
+                    <input
+                      id="simple-search"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      placeholder="Search for users..."
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      style={{ zIndex: 2 }}
+                      ref={searchRef}
+                    />
+                    {searchResults.length > 0 && (
+                        <div
+                          className="searchedresults"
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "gray",
+                            right: "5px",
+                            left: "5px",
+                            padding: "5px",
+                            width: "auto",
+                            zIndex: 1000,
+                            borderRadius: "15px",
+                          }}
+                        >
+                          <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                            {searchResults.map((searchedUser) => (
+                              <>
+                                <li
+                                  className="pb-3 sm:pb-4 m-3"
+                                  key={searchedUser._id}
+                                  onClick={() => goToProfile(searchedUser._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium text-gray-500 truncate dark:text-white">
+                                        {searchedUser.name}
+                                      </p>
+                                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        {searchedUser.username}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </li>
+                              </>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                  </div>
+                </form>
                 <Link
                   to="/"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
